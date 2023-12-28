@@ -2,7 +2,7 @@
 
 import 'dart:async';
 import 'dart:ffi';
-
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'DisplayBox.dart';
 
@@ -32,7 +32,11 @@ class homePage extends StatefulWidget {
 class _homePageState extends State<homePage> {
   int dropDownValue = 1;
 
-  late Timer timer;
+  AudioPlayer audioPlayer = AudioPlayer();
+
+  Timer? timer;
+
+  bool isTimerPaused = false;
   int remainingTime = 0; // time is in seconds
   int originalTime = 0;
 
@@ -47,14 +51,25 @@ class _homePageState extends State<homePage> {
 
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
-        if (remainingTime > 0) {
-          remainingTime--;
-        } else {
-          showNotification();
-          remainingTime = originalTime;
+        if (!isTimerPaused) {
+          if (remainingTime > 0) {
+            remainingTime--;
+          } else {
+            showNotification();
+            playAlaram();
+            remainingTime = originalTime;
+          }
         }
       });
     });
+  }
+
+  void stopAlaram() async {
+    audioPlayer.stop();
+  }
+
+  void playAlaram() {
+    audioPlayer.play(UrlSource("assets/Time_up.mp3"));
   }
 
   String printDuration(Duration duration) {
@@ -75,6 +90,7 @@ class _homePageState extends State<homePage> {
           actions: [
             TextButton(
               onPressed: () => {
+                stopAlaram(),
                 Navigator.of(context).pop(),
               },
               child: Text("OK"),
@@ -98,7 +114,7 @@ class _homePageState extends State<homePage> {
                   onPressed: () {
                     setState(() {
                       enableallButtons();
-                      timer.cancel();
+                      timer?.cancel();
                       remainingTime = 0;
                       originalTime = 0;
                     });
@@ -136,10 +152,21 @@ class _homePageState extends State<homePage> {
     button4Enabled = true;
   }
 
+  void pauseTimer() {
+    setState(() {
+      isTimerPaused = true;
+    });
+  }
+
+  void resumeTimer() {
+    setState(() {
+      isTimerPaused = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final duration = Duration(seconds: remainingTime);
-
     return Scaffold(
       drawer: Drawer(),
       appBar: AppBar(
@@ -152,6 +179,8 @@ class _homePageState extends State<homePage> {
       body: Container(
         color: Colors.pink,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             SizedBox(
               height: 20,
@@ -159,6 +188,7 @@ class _homePageState extends State<homePage> {
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   DisplayBox(
                     name: "Good",
@@ -254,19 +284,34 @@ class _homePageState extends State<homePage> {
                         printDuration(duration),
                         style: TextStyle(fontSize: 18),
                       ),
+                      Row(
+                        children: [
+                          TextButton(
+                            style: TextButton.styleFrom(
+                                backgroundColor: Colors.white),
+                            onPressed: isTimerPaused ? resumeTimer : pauseTimer,
+                            child: Text(
+                              isTimerPaused ? "Resume" : "Pause",
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                   TextButton(
                     style: TextButton.styleFrom(backgroundColor: Colors.blue),
-                    onPressed: () {
-                      setState(() {
-                        enableallButtons();
-                        timer.cancel();
-                        remainingTime = 0;
-                        originalTime = 0;
-                        dropDownValue = 1;
-                      });
-                    },
+                    onPressed: timer != null
+                        ? () {
+                            setState(() {
+                              enableallButtons();
+                              timer?.cancel();
+                              remainingTime = 0;
+                              originalTime = 0;
+                              dropDownValue = 1;
+                            });
+                          }
+                        : null,
                     child: Text(
                       "Reset",
                       style: TextStyle(color: Colors.white),
