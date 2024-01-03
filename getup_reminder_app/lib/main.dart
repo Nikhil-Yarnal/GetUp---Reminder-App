@@ -3,10 +3,13 @@
 import 'dart:async';
 import 'dart:ffi';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'DisplayBox.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const mainApp());
 }
 
@@ -180,141 +183,205 @@ class _homePageState extends State<homePage> {
         color: Colors.pink,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.end,
+          //mainAxisAlignment: MainAxisAlignment.end,
           children: [
             SizedBox(
               height: 20,
             ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  DisplayBox(
-                    name: "Good",
-                    time: "20:00",
-                    isEnable: button1Enabled,
-                    onPressed: () {
-                      setState(() {
-                        if (button1Enabled && button2Enabled) {
-                          disableOtherButton(1);
-                          startTimer(1);
-                        } else if (button1Enabled && !button2Enabled) {
-                          onButtonPressPopup();
-                        }
-                      });
-                    },
-                  ),
-                  DisplayBox(
-                    name: "Recomended",
-                    time: "30:00",
-                    isEnable: button2Enabled,
-                    onPressed: () {
-                      setState(() {
-                        if (button2Enabled && button3Enabled) {
-                          disableOtherButton(2);
-                          startTimer(1);
-                        } else if (button2Enabled && !button3Enabled) {
-                          onButtonPressPopup();
-                        }
-                      });
-                    },
-                  ),
-                  DisplayBox(
-                    name: "Acceptable",
-                    time: "40:00",
-                    isEnable: button3Enabled,
-                    onPressed: () {
-                      setState(() {
-                        if (button3Enabled && button1Enabled) {
-                          disableOtherButton(3);
-                          startTimer(1);
-                        } else if (button3Enabled && !button1Enabled) {
-                          onButtonPressPopup();
-                        }
-                      });
-                    },
-                  ),
-                ],
+            Expanded(
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    DisplayBox(
+                      name: "Good",
+                      time: "20:00",
+                      isEnable: button1Enabled,
+                      onPressed: () {
+                        setState(() {
+                          if (button1Enabled && button2Enabled) {
+                            disableOtherButton(1);
+                            startTimer(1);
+                          } else if (button1Enabled && !button2Enabled) {
+                            onButtonPressPopup();
+                          }
+                        });
+                      },
+                    ),
+                    DisplayBox(
+                      name: "Recomended",
+                      time: "30:00",
+                      isEnable: button2Enabled,
+                      onPressed: () {
+                        setState(() {
+                          if (button2Enabled && button3Enabled) {
+                            disableOtherButton(2);
+                            startTimer(1);
+                          } else if (button2Enabled && !button3Enabled) {
+                            onButtonPressPopup();
+                          }
+                        });
+                      },
+                    ),
+                    DisplayBox(
+                      name: "Acceptable",
+                      time: "40:00",
+                      isEnable: button3Enabled,
+                      onPressed: () {
+                        setState(
+                          () {
+                            if (button3Enabled && button1Enabled) {
+                              disableOtherButton(3);
+                              startTimer(1);
+                            } else if (button3Enabled && !button1Enabled) {
+                              onButtonPressPopup();
+                            }
+                          },
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
             SizedBox(
               height: 12,
             ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
+            Expanded(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    color: Colors.blue,
-                    height: 150,
-                    width: 150,
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Container(
+                        color: Colors.blue,
+                        height: 200,
+                        width: 200,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Custom Time",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                //color: Colors.white,
+                              ),
+                            ),
+                            //Text("Time"),
+                            DropdownButton<int>(
+                              value: dropDownValue,
+                              onChanged: button4Enabled
+                                  ? (int? newValue) {
+                                      setState(() {
+                                        dropDownValue = newValue ?? 1;
+                                        startTimer(dropDownValue);
+                                        disableOtherButton(0);
+                                      });
+                                    }
+                                  : null,
+                              items: List.generate(60, (index) {
+                                return DropdownMenuItem(
+                                  value: index + 1,
+                                  child: Text("${index + 1} mins"),
+                                );
+                              }),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Custom"),
-                        Text("Time"),
-                        DropdownButton<int>(
-                          value: dropDownValue,
-                          onChanged: button4Enabled
-                              ? (int? newValue) {
-                                  setState(() {
-                                    dropDownValue = newValue ?? 1;
-                                    startTimer(dropDownValue);
-                                    disableOtherButton(0);
-                                  });
-                                }
-                              : null,
-                          items: List.generate(60, (index) {
-                            return DropdownMenuItem(
-                              value: index + 1,
-                              child: Text("${index + 1} mins"),
-                            );
-                          }),
-                        )
+                        AnimatedTextKit(
+                          animatedTexts: [
+                            originalTime == 0
+                                ? TypewriterAnimatedText(
+                                    "Select time",
+                                    textStyle: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 24),
+                                    speed: Duration(milliseconds: 150),
+                                  )
+                                : TypewriterAnimatedText(
+                                    "Notifying in..",
+                                    textStyle: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 24),
+                                    speed: Duration(milliseconds: 150),
+                                  ),
+                          ],
+                          repeatForever: true,
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Text(
+                          printDuration(duration),
+                          style: TextStyle(
+                            fontSize: 22,
+                            color: Colors.white,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 32,
+                        ),
+                        TextButton(
+                          style: TextButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 30, vertical: 15),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          onPressed: isTimerPaused ? resumeTimer : pauseTimer,
+                          child: Text(
+                            isTimerPaused ? "Resume" : "Pause",
+                            style: TextStyle(color: Colors.black, fontSize: 18),
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                  Column(
-                    children: [
-                      Text(
-                        originalTime == 0 ? "Select Time" : "Notifying in..",
-                      ),
-                      Text(
-                        printDuration(duration),
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      Row(
-                        children: [
-                          TextButton(
-                            style: TextButton.styleFrom(
-                                backgroundColor: Colors.white),
-                            onPressed: isTimerPaused ? resumeTimer : pauseTimer,
-                            child: Text(
-                              isTimerPaused ? "Resume" : "Pause",
-                              style: TextStyle(color: Colors.black),
-                            ),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                        ],
+                        ),
+                        onPressed: timer != null
+                            ? () {
+                                setState(() {
+                                  enableallButtons();
+                                  timer?.cancel();
+                                  remainingTime = 0;
+                                  originalTime = 0;
+                                  dropDownValue = 1;
+                                });
+                              }
+                            : null,
+                        child: Text(
+                          "Reset",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            // fontWeight: FontWeight.w500,
+                          ),
+                        ),
                       ),
-                    ],
-                  ),
-                  TextButton(
-                    style: TextButton.styleFrom(backgroundColor: Colors.blue),
-                    onPressed: timer != null
-                        ? () {
-                            setState(() {
-                              enableallButtons();
-                              timer?.cancel();
-                              remainingTime = 0;
-                              originalTime = 0;
-                              dropDownValue = 1;
-                            });
-                          }
-                        : null,
-                    child: Text(
-                      "Reset",
-                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ],

@@ -19,16 +19,34 @@ class DisplayBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(12),
-      child: TextButton(
-        style: TextButton.styleFrom(backgroundColor: Colors.white),
-        onPressed: isEnable ? onPressed : null,
-        child: Column(
-          children: [
-            Text(name),
-            Text(time),
-          ],
-        ),
-      ),
+      child: GestureDetector(
+          onTap: isEnable ? onPressed : null,
+          child: Container(
+            width: 200,
+            height: 200,
+            decoration: BoxDecoration(
+                color: isEnable ? Colors.white : Colors.grey,
+                borderRadius: BorderRadius.circular(12)),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    name,
+                    style: TextStyle(
+                      //color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    time,
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          )),
     );
   }
 }
