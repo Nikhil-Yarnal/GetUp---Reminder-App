@@ -266,7 +266,7 @@ class _homePageState extends State<homePage> {
                                     },
                                   ),
                                   DisplayBox(
-                                    name: "Recomended",
+                                    name: "Recommended",
                                     time: "30:00",
                                     isEnable: button2Enabled,
                                     onPressed: () {
@@ -320,8 +320,8 @@ class _homePageState extends State<homePage> {
                                   opacity: button4Enabled ? 1.0 : 0.5,
                                   child: Container(
                                     color: Color(0xFFfefae0),
-                                    height: 190,
-                                    width: 190,
+                                    height: 200,
+                                    width: 200,
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,

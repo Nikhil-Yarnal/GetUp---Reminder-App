@@ -25,8 +25,8 @@ class DisplayBox extends StatelessWidget {
           child: Opacity(
             opacity: isEnable ? 1.0 : 0.5,
             child: Container(
-              width: 170,
-              height: 170,
+              width: 200,
+              height: 200,
               decoration: BoxDecoration(
                   color: Color(0xFFfefae0),
                   borderRadius: BorderRadius.circular(12)),
