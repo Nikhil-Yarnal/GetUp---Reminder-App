@@ -88,15 +88,28 @@ class _homePageState extends State<homePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Time Up"),
-          content: Text("Get the fuck up"),
+          title: Text(
+            "Time Up",
+            style: TextStyle(
+                color: Color(0xFF283618),
+                fontSize: 22,
+                fontWeight: FontWeight.bold),
+          ),
+          content: Text("Take a quick break.",
+              style: TextStyle(color: Color(0xFF283618), fontSize: 18)),
           actions: [
             TextButton(
               onPressed: () => {
                 stopAlaram(),
                 Navigator.of(context).pop(),
               },
-              child: Text("OK"),
+              style: TextButton.styleFrom(
+                backgroundColor: Color(0xFF283618),
+              ),
+              child: Text(
+                "OK",
+                style: TextStyle(color: Color(0xFFfefae0)),
+              ),
             ),
           ],
         );
@@ -109,11 +122,22 @@ class _homePageState extends State<homePage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Button Pressed"),
-            content: Text("Are you sure, stop the timer ? "),
+            backgroundColor: Color(0xFFfefae0),
+            title: Text(
+              "Alert",
+              style: TextStyle(
+                  color: Color(0xFF283618),
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold),
+            ),
+            content: Text(
+              "Are you sure, stop the timer ?",
+              style: TextStyle(color: Color(0xFF283618), fontSize: 18),
+            ),
             actions: [
               TextButton(
-                  style: TextButton.styleFrom(backgroundColor: Colors.blue),
+                  style:
+                      TextButton.styleFrom(backgroundColor: Color(0xFF283618)),
                   onPressed: () {
                     setState(() {
                       enableallButtons();
@@ -125,16 +149,17 @@ class _homePageState extends State<homePage> {
                   },
                   child: Text(
                     "YES",
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Color(0xFFfefae0)),
                   )),
               TextButton(
-                  style: TextButton.styleFrom(backgroundColor: Colors.blue),
+                  style:
+                      TextButton.styleFrom(backgroundColor: Color(0xFF283618)),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
                   child: Text(
                     "NO",
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Color(0xFFfefae0)),
                   ))
             ],
           );
@@ -171,16 +196,25 @@ class _homePageState extends State<homePage> {
   Widget build(BuildContext context) {
     final duration = Duration(seconds: remainingTime);
     return Scaffold(
-      drawer: Drawer(),
       appBar: AppBar(
         title: Text(
-          "Home Page",
-          style: TextStyle(color: Colors.white),
+          "Get up - Reminder App",
+          style: TextStyle(
+            color: Color(0xFFfefae0),
+          ),
         ),
-        backgroundColor: Colors.blue,
+        backgroundColor: Color(0xFF283618),
       ),
       body: Container(
-        color: Colors.pink,
+        //color: Color(0xFF97A74D),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color(0xFF485A29),
+              Color(0xFF97A74D),
+            ],
+          ),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           //mainAxisAlignment: MainAxisAlignment.end,
@@ -189,58 +223,60 @@ class _homePageState extends State<homePage> {
               height: 20,
             ),
             Expanded(
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    DisplayBox(
-                      name: "Good",
-                      time: "20:00",
-                      isEnable: button1Enabled,
-                      onPressed: () {
-                        setState(() {
-                          if (button1Enabled && button2Enabled) {
-                            disableOtherButton(1);
-                            startTimer(1);
-                          } else if (button1Enabled && !button2Enabled) {
-                            onButtonPressPopup();
-                          }
-                        });
-                      },
-                    ),
-                    DisplayBox(
-                      name: "Recomended",
-                      time: "30:00",
-                      isEnable: button2Enabled,
-                      onPressed: () {
-                        setState(() {
-                          if (button2Enabled && button3Enabled) {
-                            disableOtherButton(2);
-                            startTimer(1);
-                          } else if (button2Enabled && !button3Enabled) {
-                            onButtonPressPopup();
-                          }
-                        });
-                      },
-                    ),
-                    DisplayBox(
-                      name: "Acceptable",
-                      time: "40:00",
-                      isEnable: button3Enabled,
-                      onPressed: () {
-                        setState(
-                          () {
-                            if (button3Enabled && button1Enabled) {
-                              disableOtherButton(3);
-                              startTimer(1);
-                            } else if (button3Enabled && !button1Enabled) {
+              child: SingleChildScrollView(
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      DisplayBox(
+                        name: "Good",
+                        time: "20:00",
+                        isEnable: button1Enabled,
+                        onPressed: () {
+                          setState(() {
+                            if (button1Enabled && button2Enabled) {
+                              disableOtherButton(1);
+                              startTimer(20);
+                            } else if (button1Enabled && !button2Enabled) {
                               onButtonPressPopup();
                             }
-                          },
-                        );
-                      },
-                    ),
-                  ],
+                          });
+                        },
+                      ),
+                      DisplayBox(
+                        name: "Recomended",
+                        time: "30:00",
+                        isEnable: button2Enabled,
+                        onPressed: () {
+                          setState(() {
+                            if (button2Enabled && button3Enabled) {
+                              disableOtherButton(2);
+                              startTimer(30);
+                            } else if (button2Enabled && !button3Enabled) {
+                              onButtonPressPopup();
+                            }
+                          });
+                        },
+                      ),
+                      DisplayBox(
+                        name: "Acceptable",
+                        time: "40:00",
+                        isEnable: button3Enabled,
+                        onPressed: () {
+                          setState(
+                            () {
+                              if (button3Enabled && button1Enabled) {
+                                disableOtherButton(3);
+                                startTimer(40);
+                              } else if (button3Enabled && !button1Enabled) {
+                                onButtonPressPopup();
+                              }
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -254,41 +290,56 @@ class _homePageState extends State<homePage> {
                   Expanded(
                     child: Align(
                       alignment: Alignment.centerRight,
-                      child: Container(
-                        color: Colors.blue,
-                        height: 200,
-                        width: 200,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Custom Time",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                //color: Colors.white,
+                      child: Opacity(
+                        opacity: button4Enabled ? 1.0 : 0.5,
+                        child: Container(
+                          color: Color(0xFFfefae0),
+                          height: 190,
+                          width: 190,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Custom Time",
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF283618),
+                                  //color: Colors.white,
+                                ),
                               ),
-                            ),
-                            //Text("Time"),
-                            DropdownButton<int>(
-                              value: dropDownValue,
-                              onChanged: button4Enabled
-                                  ? (int? newValue) {
-                                      setState(() {
-                                        dropDownValue = newValue ?? 1;
-                                        startTimer(dropDownValue);
-                                        disableOtherButton(0);
-                                      });
-                                    }
-                                  : null,
-                              items: List.generate(60, (index) {
-                                return DropdownMenuItem(
-                                  value: index + 1,
-                                  child: Text("${index + 1} mins"),
-                                );
-                              }),
-                            )
-                          ],
+                              //Text("Time"),
+                              DropdownButton<int>(
+                                value: dropDownValue,
+                                onChanged: button4Enabled
+                                    ? (int? newValue) {
+                                        setState(() {
+                                          dropDownValue = newValue ?? 1;
+                                          startTimer(dropDownValue);
+                                          disableOtherButton(0);
+                                        });
+                                      }
+                                    : null,
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xFF283618)),
+                                iconSize: 38,
+                                iconEnabledColor: Color(0xFF283618),
+                                items: List.generate(60, (index) {
+                                  return DropdownMenuItem(
+                                    value: index + 1,
+                                    child: Text(
+                                      "${index + 1} mins",
+                                      style: TextStyle(
+                                        color: Color(0xFF283618),
+                                      ),
+                                    ),
+                                  );
+                                }),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -325,7 +376,7 @@ class _homePageState extends State<homePage> {
                         Text(
                           printDuration(duration),
                           style: TextStyle(
-                            fontSize: 22,
+                            fontSize: 26,
                             color: Colors.white,
                           ),
                         ),
@@ -334,7 +385,7 @@ class _homePageState extends State<homePage> {
                         ),
                         TextButton(
                           style: TextButton.styleFrom(
-                            backgroundColor: Colors.white,
+                            backgroundColor: Color(0xFFfefae0),
                             padding: EdgeInsets.symmetric(
                                 horizontal: 30, vertical: 15),
                             shape: RoundedRectangleBorder(
@@ -344,7 +395,8 @@ class _homePageState extends State<homePage> {
                           onPressed: isTimerPaused ? resumeTimer : pauseTimer,
                           child: Text(
                             isTimerPaused ? "Resume" : "Pause",
-                            style: TextStyle(color: Colors.black, fontSize: 18),
+                            style: TextStyle(
+                                color: Color(0xFF283618), fontSize: 18),
                           ),
                         ),
                       ],
@@ -355,7 +407,7 @@ class _homePageState extends State<homePage> {
                       alignment: Alignment.centerLeft,
                       child: TextButton(
                         style: TextButton.styleFrom(
-                          backgroundColor: Colors.blue,
+                          backgroundColor: Color(0xFFfefae0),
                           padding: EdgeInsets.symmetric(
                               horizontal: 30, vertical: 15),
                           shape: RoundedRectangleBorder(
@@ -370,21 +422,67 @@ class _homePageState extends State<homePage> {
                                   remainingTime = 0;
                                   originalTime = 0;
                                   dropDownValue = 1;
+                                  stopAlaram();
                                 });
                               }
                             : null,
                         child: Text(
                           "Reset",
                           style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            // fontWeight: FontWeight.w500,
-                          ),
+                              color: Color(0xFF283618),
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600
+                              // fontWeight: FontWeight.w500,
+                              ),
                         ),
                       ),
                     ),
                   ),
                 ],
+              ),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Color(0xFFdda15e),
+                      Color(0xFFbc6c25),
+                    ],
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                  ),
+                ),
+                //color: Colors.white,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Activities during your break",
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      "Stretch your neck and shoulder.",
+                      style: TextStyle(fontSize: 22),
+                    ),
+                    Text(
+                      "Take your eyes of the screen and look away.",
+                      style: TextStyle(fontSize: 22),
+                    ),
+                    Text(
+                      "Take a short walk.",
+                      style: TextStyle(fontSize: 22),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
