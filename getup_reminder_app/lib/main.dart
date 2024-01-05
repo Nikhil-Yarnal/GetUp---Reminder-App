@@ -96,6 +96,7 @@ class _homePageState extends State<homePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: Color(0xFFfefae0),
           title: Text(
             "Time Up",
             style: TextStyle(
