@@ -6,7 +6,7 @@ import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
 
 import 'package:flutter/material.dart';
-
+//import 'package:just_audio/just_audio.dart';
 import 'package:window_size/window_size.dart';
 import 'DisplayBox.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -43,7 +43,7 @@ class homePage extends StatefulWidget {
 class _homePageState extends State<homePage> {
   int dropDownValue = 1;
 
-  AudioPlayer audioPlayer = AudioPlayer();
+  final audioPlayer = AudioPlayer();
 
   Timer? timer;
 
@@ -79,8 +79,8 @@ class _homePageState extends State<homePage> {
     audioPlayer.stop();
   }
 
-  void playAlaram() {
-    audioPlayer.play(UrlSource("assets/Time_up.mp3"));
+  void playAlaram() async {
+    await audioPlayer.play(DeviceFileSource("assets/Time_up.wav"));
   }
 
   String printDuration(Duration duration) {
