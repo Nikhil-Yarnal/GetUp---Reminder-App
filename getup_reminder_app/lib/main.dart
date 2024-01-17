@@ -3,10 +3,12 @@
 import 'dart:async';
 
 import 'dart:io';
+//import 'package:audioplayers/audioplayers.dart';
 import 'package:audioplayers/audioplayers.dart';
-
+//import 'package:media_kit_libs_audio/media_kit_libs_audio.dart';
+//import 'package:media_kit/media_kit.dart';
 import 'package:flutter/material.dart';
-//import 'package:just_audio/just_audio.dart';
+
 import 'package:window_size/window_size.dart';
 import 'DisplayBox.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -14,7 +16,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //await windowManager.ensureInitialized();
-
+  //MediaKit.ensureInitialized();
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     setWindowMinSize(Size(1000, 640));
   }
@@ -44,6 +46,8 @@ class _homePageState extends State<homePage> {
   int dropDownValue = 1;
 
   final audioPlayer = AudioPlayer();
+
+  //final player = Player();
 
   Timer? timer;
 
@@ -77,10 +81,12 @@ class _homePageState extends State<homePage> {
 
   void stopAlaram() async {
     audioPlayer.stop();
+    //player.stop();
   }
 
   void playAlaram() async {
     await audioPlayer.play(DeviceFileSource("assets/Time_up.wav"));
+    //await player.open(Media("assets/Time_up.wav"));
   }
 
   String printDuration(Duration duration) {
@@ -117,7 +123,9 @@ class _homePageState extends State<homePage> {
               ),
               child: Text(
                 "OK",
-                style: TextStyle(color: Color(0xFFfefae0)),
+                style: TextStyle(
+                  color: Color(0xFFfefae0),
+                ),
               ),
             ),
           ],
